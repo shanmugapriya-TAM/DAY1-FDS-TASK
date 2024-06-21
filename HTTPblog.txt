@@ -1,0 +1,72 @@
+1.Write a blog on Difference between HTTP1.1 vs HTTP2
+HTTP (HyperText Transfer Protocol) is the underlying protocol of the World Wide Web. Developed by Tim Berners-Lee and his team between 1989-1991, HTTP has gone through many changes that have helped maintain its simplicity while shaping its flexibility.
+
+##Invention of the World Wide Web
+In 1989, while working at CERN, Tim Berners-Lee wrote a proposal to build a hypertext system over the internet. Initially called the Mesh, it was later renamed the World Wide Web during its implementation in 1990. Built over the existing TCP and IP protocols, it consisted of 4 building blocks:
+
+	A textual format to represent hypertext documents, the HyperText Markup Language (HTML).
+	A simple protocol to exchange these documents, the HyperText Transfer Protocol (HTTP).
+	A client to display (and edit) these documents, the first web browser called the WorldWideWeb.
+	A server to give access to the document, an early version of httpd.
+These four building blocks were completed by the end of 1990, and the first servers were running outside of CERN by early 1991. On August 6, 1991, Tim Berners-Lee posted on the public alt.hypertext newsgroup. This is now considered to be the official start of the World Wide Web as a public project.
+The HTTP protocol used in those early phases was very simple. It was later dubbed HTTP/0.9 and is sometimes called the one-line protocol.
+
+#Version of HTTP
+HTTP/0.9 – The one-line protocol
+		The initial version of HTTP had no version number; it was later called 0.9 to differentiate it from later versions. HTTP/0.9 was extremely simple: requests consisted of a single line and started with the only possible method GET. For example,
+HTTP
+GET /mypage.html
+The response was extremely simple, too: it only consisted of the file itself.
+HTML
+<html>
+  A very simple HTML page
+</html>
+Unlike subsequent evolutions, there were no HTTP headers. This meant that only HTML files could be transmitted. There were no status or error codes. If there was a problem, a specific HTML file was generated and included a description of the problem for human consumption.
+
+HTTP/1.0 – Building extensibility
+HTTP/0.9 was very limited, but browsers and servers quickly made it more versatile.so in next version HTTP/1.0 have some added features like 
+1.Versioning information was sent within each request (HTTP/1.0 was appended to the GET line).
+2. Status code, that is allowed the browser itself to recognize the success or failure of a request and adapt its behavior accordingly
+3.The concept of HTTP headers was introduced for both requests and responses. Metadata could be transmitted and the protocol became extremely flexible and extensible.
+4.Documents other than plain HTML files could be transmitted thanks to the Content-Type header.
+
+HTTP/1.1 – The standardized protocol
+In the meantime, proper standardization was in progress. This happened in parallel to the diverse implementations of HTTP/1.0. The first standardized version of HTTP, HTTP/1.1, was published in early 1997, only a few months after HTTP/1.0.
+HTTP/1.1 introduced numerous improvements like ,
+1.A connection could be reused, which saved time. It no longer needed to be opened multiple times to display the resources embedded in the single original document.
+2.Pipelining was added. This allowed a second request to be sent before the answer to the first one was fully transmitted. This lowered the latency of the communication.
+3.Chunked responses were also supported.
+4.Additional cache control mechanisms were introduced.
+5.Content negotiation, including language, encoding, and type, was introduced. A client and a server could now agree on which content to exchange.
+Thanks to the Host header, the ability to host different domains from the same IP address allowed server collocation.
+6.The extensibility of HTTP made it easy to create new headers and methods. Even though the HTTP/1.1 protocol was refined over two revisions, RFC 2616 published in June 1999 and RFC 7230-RFC 7235 published in June 2014 before the release of HTTP/2, it was extremely stable for more than 15 years.
+
+For security reasons, the computer-services company Netscape Communications created an additional encrypted transmission layer on top of it: SSL(Secure Socket Layer). SSL 1.0 was never released to the public, but SSL 2.0 and its successor SSL 3.0 allowed for the creation of e-commerce websites. To do this, they encrypted and guaranteed the authenticity of the messages exchanged between the server and client. SSL was eventually standardized and became TLS(Transport Layer Security ).
+
+During the same time period, it became clear that an encrypted transport layer was needed. The web was no longer a mostly academic network, and instead became a jungle where advertisers, random individuals, and criminals competed for as much private data as possible. As the applications built over HTTP became more powerful and required access to private information like address books, email, and user location, TLS became necessary outside the e-commerce use case.
+
+	#Relaxing the security-model of the web
+	HTTP is independent of the web security model, known as the same-origin policy. In fact, the current web security model was developed after the creation of HTTP! Over the years, it proved useful to lift some restrictions of this policy under certain 	constraints. The server transmitted how much and when to lift such restrictions to the client using a new set of HTTP headers. These were defined in specifications like Cross-Origin Resource Sharing (CORS) and the Content Security Policy (CSP).
+
+	In addition to these large extensions, many other headers were added, sometimes only experimentally. Notable headers are the Do Not Track (DNT) header to control privacy, X-Frame-Options, and Upgrade-Insecure-Requests but many more exist.
+HTTP/2 – A protocol for greater performance
+Over the years, web pages became more complex. Some of them were even applications in their own right. More visual media was displayed and the volume and size of scripts adding interactivity also increased. Much more data was transmitted over significantly more HTTP requests and this created more complexity and overhead for HTTP/1.1 connections. To account for this, Google implemented an experimental protocol SPDY in the early 2010s. 
+SPDY manipulates HTTP traffic, with particular goals of reducing web page load latency and improving web security. SPDY achieves reduced latency through compression, multiplexing, and prioritization, [1] although this depends on a combination of network and website deployment conditions. 
+This alternative way of exchanging data between client and server amassed interest from developers working on both browsers and servers. SPDY defined an increase in responsiveness and solved the problem of duplicate data transmission, serving as the foundation for the HTTP/2 protocol.
+
+The HTTP/2 protocol differs from HTTP/1.1 in a few ways:
+
+1.It's a binary protocol rather than a text protocol. It can't be read and created manually. Despite this hurdle, it allows for the implementation of improved optimization techniques.
+2.It's a multiplexed protocol. Parallel requests can be made over the same connection, removing the constraints of the HTTP/1.x protocol.
+3.It compresses headers. As these are often similar among a set of requests, this removes the duplication and overhead of data transmitted.
+4.It allows a server to populate data in a client cache through a mechanism called the server push.
+
+Officially standardized in May 2015, HTTP/2 use peaked in January 2022 at 46.9% of all websites.In 2016 ,HTTP/2 came upwith some evoluation .Those are 
+1.Support for Alt-Svc allowed the dissociation of the identification and the location of a given resource. This meant a smarter CDN caching mechanism.A CDN (Content Delivery Network) is a group of servers spread out over many locations. These servers store duplicate copies of data so that servers can fulfill data requests based on which servers are closest to the respective end-users. CDNs make for fast service less affected by high traffic.
+2.The introduction of client hints allowed the browser or client to proactively communicate information about its requirements and hardware constraints to the server.Client hints are a set of HTTP request header fields that a server can proactively request from a client to get information about the device, network, user, and user-agent-specific preferences. The server can determine which resources to send, based on the information that the client chooses to provide.
+3.The introduction of security-related prefixes in the Cookie header helped guarantee that secure cookies couldn't be altered.
+
+Add-on
+The next major version of HTTP, HTTP/3 has the same semantics as earlier versions of HTTP but uses QUIC instead of TCP for the transport layer portion.
+QUIC is a multiplexed transport protocol implemented on UDP. It is used instead of TCP(Transmission Control Protocol)as the transport layer in HTTP/3.User Datagram Protocol (UDP) is a Transport Layer protocol.
+QUIC is designed to provide much lower latency for HTTP connections. Like HTTP/2, it is a multiplexed protocol, but HTTP/2 runs over a single TCP connection, so packet loss detection and retransmission handled at the TCP layer can block all streams. QUIC runs multiple streams over UDP and implements packet loss detection and retransmission independently for each stream, so that if an error occurs, only the stream with data in that packet is blocked.
